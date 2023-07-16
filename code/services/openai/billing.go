@@ -36,9 +36,12 @@ func (gpt *ChatGPT) GetBalance() (*BalanceResponse, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to get billing subscription: %v", err)
 	}
-	nowdate := time.Now()
-	enddate := nowdate.Format("2006-01-02")
-	startdate := nowdate.AddDate(0, 0, -100).Format("2006-01-02")
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+	nowdate := time.Now().In(loc)
+	enddate := nowdate.AddDate(0, 0, 1).Format("2006-01-02")
+	// Set startdate as the first date of the same month as enddate
+	startdate := nowdate.AddDate(0, 0, -nowdate.Day()+1).Format("2006-01-02")
+
 	var data2 BillingUsage
 	err = gpt.sendRequestWithBodyType(
 		gpt.ApiUrl+fmt.Sprintf("/v1/dashboard/billing/usage?start_date=%s&end_date=%s", startdate, enddate),
@@ -62,8 +65,8 @@ func (gpt *ChatGPT) GetBalance() (*BalanceResponse, error) {
 	}
 
 	if data1.AccessUntil > 0 {
-		balance.EffectiveAt = time.Now()
-		balance.ExpiresAt = time.Unix(int64(data1.AccessUntil), 0)
+		balance.EffectiveAt = time.Unix(int64(data1.AccessUntil), 0)
+		balance.ExpiresAt = time.Now().In(loc)
 	}
 
 	return balance, nil
