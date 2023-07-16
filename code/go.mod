@@ -12,6 +12,7 @@ require (
 	github.com/pandodao/tokenizer-go v0.2.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pion/opus v0.0.0-20230123082803-1052c3e89e58
+	github.com/pkoukk/tiktoken-go v0.1.5
 	github.com/sashabaranov/go-openai v1.13.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/pflag v1.0.5
@@ -20,7 +21,7 @@ require (
 )
 
 require (
-	github.com/dlclark/regexp2 v1.8.1 // indirect
+	github.com/dlclark/regexp2 v1.10.0 // indirect
 	github.com/dop251/goja v0.0.0-20230304130813-e2f543bf4b4c // indirect
 	github.com/dop251/goja_nodejs v0.0.0-20230226152057-060fa99b809f // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
