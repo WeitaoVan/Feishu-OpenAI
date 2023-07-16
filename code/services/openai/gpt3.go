@@ -90,11 +90,14 @@ func (gpt *ChatGPT) Completions(msg []Messages, aiMode AIMode) (resp Messages,
 		return resp, errors.New("无法获取openai请求地址")
 	}
 	err = gpt.sendRequestWithBodyType(url, "POST", jsonBody, requestBody, gptResponseBody)
-	numTokens := NumTokensFromMessagesCompletion(requestBody.Messages, requestBody.Model)
-    numTokensStr := fmt.Sprintf(" (%d tokens used)", numTokens)
+	numTokensInput := NumTokensFromMessagesCompletion(requestBody.Messages, requestBody.Model)
 
 	if err == nil && len(gptResponseBody.Choices) > 0 {
 		resp = gptResponseBody.Choices[0].Message
+		resp_as_array := []Messages{gptResponseBody.Choices[0].Message}
+		numTokensOutput := NumTokensFromMessagesCompletion(resp_as_array, requestBody.Model)
+		numTokensStr := fmt.Sprintf(" (%d tokens)", numTokensInput + numTokensOutput)
+
 		resp.Content = resp.Content + numTokensStr
 	} else {
 		logger.Errorf("ERROR %v", err)

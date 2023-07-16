@@ -67,7 +67,7 @@ func (c *ChatGPT) StreamChatWithHistory(ctx context.Context,
 		//ModerationStop: true,
 	}
 	numTokens := NumTokensFromMessages(msg, c.Model)
-    numTokensStr := fmt.Sprintf(" (%d tokens used)", numTokens)
+    numTokensStr := fmt.Sprintf(" (%d tokens)", numTokens)
 
 	stream, err := client.CreateChatCompletionStream(ctx, req)
 	if err != nil {
